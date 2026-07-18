@@ -36,11 +36,6 @@ bot.on('chat', (username, message) => {
 bot.on('kicked', (reason) => console.log('Bot was kicked:', reason));
 bot.on('error', (err) => console.error('Bot error:', err));
 app.get('/', (req, res) => res.send('Bot is active!'));
-
-const port = process.env.PORT || 10000;
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Web server listening on port ${port}`);
-});
 // Replace the numbers below with your actual Discord channel ID where you will type commands
 const DISCORD_CHANNEL_ID = '780447656723087373'; 
 
