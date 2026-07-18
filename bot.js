@@ -35,4 +35,8 @@ bot.on('chat', (username, message) => {
 bot.on('kicked', (reason) => console.log('Bot was kicked:', reason));
 bot.on('error', (err) => console.error('Bot error:', err));
 app.get('/', (req, res) => res.send('Bot is active!'));
-app.listen(port, () => console.log(`Web server listening on port ${port}`));
+
+const port = process.env.PORT || 10000;
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Web server listening on port ${port}`);
+});
