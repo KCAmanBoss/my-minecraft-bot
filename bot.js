@@ -47,3 +47,7 @@ discordClient.on('messageCreate', async (message) => {
 });
 
 discordClient.login(process.env.DISCORD_TOKEN);
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
