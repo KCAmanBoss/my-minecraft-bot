@@ -1,3 +1,6 @@
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000; 
 const mineflayer = require('mineflayer');
 
 const BOT_PASSWORD = 'ilovegay'; // Your registered password
@@ -31,3 +34,5 @@ bot.on('chat', (username, message) => {
 // Error tracking so it doesn't crash silently
 bot.on('kicked', (reason) => console.log('Bot was kicked:', reason));
 bot.on('error', (err) => console.error('Bot error:', err));
+app.get('/', (req, res) => res.send('Bot is active!'));
+app.listen(port, () => console.log(`Web server listening on port ${port}`));
