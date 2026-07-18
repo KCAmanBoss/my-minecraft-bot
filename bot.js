@@ -1,4 +1,5 @@
-const express = require('express');
+const { Client, GatewayIntentBits } = require('discord.js');
+const discordClient = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000; 
 const mineflayer = require('mineflayer');
@@ -40,3 +41,14 @@ const port = process.env.PORT || 10000;
 app.listen(port, '0.0.0.0', () => {
   console.log(`Web server listening on port ${port}`);
 });
+// Replace the numbers below with your actual Discord channel ID where you will type commands
+const DISCORD_CHANNEL_ID = '780447656723087373'; 
+
+discordClient.on('messageCreate', async (message) => {
+  if (message.author.bot || message.channel.id !== DISCORD_CHANNEL_ID) return;
+
+  // This forwards your Discord message directly to Minecraft chat
+  bot.chat(message.content);
+});
+
+discordClient.login(process.env.DISCORD_TOKEN);
