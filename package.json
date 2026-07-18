@@ -11,7 +11,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-  "express": "^4.19.2",
-  "mineflayer": "^4.22.0",
-  "discord.js": "^14.15.0"
-}
+    "express": "^4.19.2",
+    "mineflayer": "^4.22.0",
+    "discord.js": "^14.15.0"
+  }
