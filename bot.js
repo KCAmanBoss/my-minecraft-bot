@@ -15,14 +15,20 @@ const bot = mineflayer.createBot({
 
 // Triggered when the bot successfully connects
 // Triggered when the bot successfully connects
+// Add this variable near the top of your file (outside the events) to track login status
+let hasLoggedIn = false;
+
 bot.on('spawn', () => {
   console.log(`${bot.username} has spawned in the server.`);
 
-  // Wait 2 seconds before sending the login command to ensure the server is ready
-  setTimeout(() => {
-    bot.chat('/login ilovegay');
-    console.log('Sent login command after delay.');
-  }, 2000);
+  // Only send the login command if the bot hasn't logged in yet during this session
+  if (!hasLoggedIn) {
+    hasLoggedIn = true;
+    setTimeout(() => {
+      bot.chat('/login ilovegay');
+      console.log('Sent login command after delay.');
+    }, 2000);
+  }
 
   // Clear states to prevent physics anti-cheat conflicts
   bot.clearControlStates();
@@ -31,6 +37,12 @@ bot.on('spawn', () => {
   }
 
   console.log('Bot position stabilized.');
+});
+
+// Reset the login flag if the bot gets disconnected, so it can log in again on reconnect
+bot.on('end', () => {
+  hasLoggedIn = false;
+  console.log('Bot disconnected. Resetting login flag.');
 });
 // Simple keep-alive confirmation
 bot.on('chat', (username, message) => {
