@@ -16,9 +16,18 @@ const bot = mineflayer.createBot({
 // Triggered when the bot successfully connects
 // Triggered when the bot successfully connects
 // Scan all incoming chat messages for the login prompt
+// Scan all incoming chat messages for the login prompt
 bot.on('messagestr', (message) => {
   if (message.includes('/login')) {
     console.log('EasyAuth login prompt detected. Sending password...');
+    
+    // Force override Mineflayer's position updates to stop it from sending invalid packets
+    if (bot.sendPackets) {
+      bot.clearControlStates();
+      // This forces the network layer to wait for the server's teleport packet
+      bot.entity.position.set(-4887.5, 212.0, 199.5); 
+    }
+
     bot.chat('/login ilovegay');
   }
 });
