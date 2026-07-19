@@ -15,28 +15,21 @@ const bot = mineflayer.createBot({
 
 // Triggered when the bot successfully connects
 // Triggered when the bot successfully connects
-// Add this variable near the top of your file (outside the events) to track login status
-let hasLoggedIn = false;
-
-bot.on('spawn', () => {
-  console.log(`${bot.username} has spawned in the server.`);
-
-  // Only send the login command if the bot hasn't logged in yet during this session
-  if (!hasLoggedIn) {
-    hasLoggedIn = true;
-    setTimeout(() => {
-      bot.chat('/login ilovegay');
-      console.log('Sent login command after delay.');
-    }, 2000);
+// Scan all incoming chat messages for the login prompt
+bot.on('messagestr', (message) => {
+  if (message.includes('/login')) {
+    console.log('EasyAuth login prompt detected. Sending password...');
+    bot.chat('/login ilovegay');
   }
+});
 
-  // Clear states to prevent physics anti-cheat conflicts
+// Clear states to prevent physics anti-cheat conflicts on spawn
+bot.on('spawn', () => {
+  console.log(`${bot.username} has spawned/moved.`);
   bot.clearControlStates();
   if (bot.entity) {
     bot.entity.velocity.set(0, 0, 0);
   }
-
-  console.log('Bot position stabilized.');
 });
 
 // Reset the login flag if the bot gets disconnected, so it can log in again on reconnect
