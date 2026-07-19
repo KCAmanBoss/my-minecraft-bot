@@ -22,14 +22,13 @@ bot.on('spawn', () => {
   bot.physics.enabled = false; 
 
   // Log in immediately
-  bot.chat(`/login ${BOT_PASSWORD}`);
   console.log('Sent login chat packet.');
 
   // Safely re-enable physics 3 seconds after logging in
   setTimeout(() => {
     bot.physics.enabled = true;
     console.log('Physics re-enabled safely.');
-  }, 3000);
+  }, 5000);
 });
 
 // Simple keep-alive confirmation
