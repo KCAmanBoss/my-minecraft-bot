@@ -18,7 +18,11 @@ const bot = mineflayer.createBot({
 bot.on('spawn', () => {
   console.log(`${bot.username} has spawned in the server.`);
 
-  // Reset any automatic movement or falling velocity instantly on spawn
+  // Automatically log in to EasyAuth with the new password
+  bot.chat('/login ilovegay');
+  console.log('Sent login command.');
+
+  // Clear states to prevent physics anti-cheat conflicts
   bot.clearControlStates();
   if (bot.entity) {
     bot.entity.velocity.set(0, 0, 0);
@@ -26,7 +30,6 @@ bot.on('spawn', () => {
 
   console.log('Bot position stabilized.');
 });
-
 // Simple keep-alive confirmation
 bot.on('chat', (username, message) => {
   if (username === bot.username) return;
