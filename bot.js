@@ -14,12 +14,22 @@ const bot = mineflayer.createBot({
 });
 
 // Triggered when the bot successfully connects
+// Triggered when the bot successfully connects
 bot.on('spawn', () => {
   console.log(`${bot.username} has spawned in the server.`);
   
-  // Log in immediately without any timeout delay
+  // Disable the physics engine completely so it doesn't fight AuthMe
+  bot.physics.enabled = false; 
+
+  // Log in immediately
   bot.chat(`/login ${BOT_PASSWORD}`);
   console.log('Sent login chat packet.');
+
+  // Safely re-enable physics 3 seconds after logging in
+  setTimeout(() => {
+    bot.physics.enabled = true;
+    console.log('Physics re-enabled safely.');
+  }, 3000);
 });
 
 // Simple keep-alive confirmation
