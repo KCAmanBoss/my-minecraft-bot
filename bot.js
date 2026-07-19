@@ -26,10 +26,19 @@ bot.on('messagestr', (message) => {
 // Clear states to prevent physics anti-cheat conflicts on spawn
 bot.on('spawn', () => {
   console.log(`${bot.username} has spawned/moved.`);
+  
+  // Temporarily disable physics for 1 second to let the server teleport the bot safely
+  bot.physics.enabled = false;
+
   bot.clearControlStates();
   if (bot.entity) {
     bot.entity.velocity.set(0, 0, 0);
   }
+
+  setTimeout(() => {
+    bot.physics.enabled = true;
+    console.log('Bot physics re-enabled and stabilized safely.');
+  }, 1000);
 });
 
 // Simple disconnect log
