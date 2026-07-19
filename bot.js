@@ -51,3 +51,17 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
+// This forwards Minecraft chat directly back to your Discord channel
+bot.on('chat', (username, message) => {
+  // Prevent the bot from forwarding its own messages or loops
+  if (username === bot.username) return;
+
+  // Find your Discord channel using the ID you already set up
+  const channel = discordClient.channels.cache.get('780447656723087373');
+  
+  if (channel) {
+    // Sends the text to Discord formatted cleanly like: [Minecraft] Player: Hello!
+    channel.send(`**[Minecraft] ${username}**: ${message}`)
+      .catch(err => console.error('Failed to send message to Discord:', err));
+  }
+});
