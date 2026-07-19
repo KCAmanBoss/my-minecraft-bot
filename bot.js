@@ -32,10 +32,9 @@ bot.on('spawn', () => {
   }
 });
 
-// Reset the login flag if the bot gets disconnected, so it can log in again on reconnect
+// Simple disconnect log
 bot.on('end', () => {
-  hasLoggedIn = false;
-  console.log('Bot disconnected. Resetting login flag.');
+  console.log('Bot disconnected from the server.');
 });
 // Simple keep-alive confirmation
 bot.on('chat', (username, message) => {
