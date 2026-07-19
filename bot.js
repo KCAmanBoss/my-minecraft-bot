@@ -18,9 +18,11 @@ const bot = mineflayer.createBot({
 bot.on('spawn', () => {
   console.log(`${bot.username} has spawned in the server.`);
 
-  // Automatically log in to EasyAuth with the new password
-  bot.chat('/login ilovegay');
-  console.log('Sent login command.');
+  // Wait 2 seconds before sending the login command to ensure the server is ready
+  setTimeout(() => {
+    bot.chat('/login ilovegay');
+    console.log('Sent login command after delay.');
+  }, 2000);
 
   // Clear states to prevent physics anti-cheat conflicts
   bot.clearControlStates();
