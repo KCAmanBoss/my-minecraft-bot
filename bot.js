@@ -17,11 +17,9 @@ const bot = mineflayer.createBot({
 bot.on('spawn', () => {
   console.log(`${bot.username} has spawned in the server.`);
   
-  // Wait 2 seconds for the server to prompt, then log in
-  setTimeout(() => {
-    bot.chat(`/login ${BOT_PASSWORD}`);
-    console.log('Sent login chat packet.');
-  }, 2000);
+  // Log in immediately without any timeout delay
+  bot.chat(`/login ${BOT_PASSWORD}`);
+  console.log('Sent login chat packet.');
 });
 
 // Simple keep-alive confirmation
