@@ -41,17 +41,17 @@ let hasLoggedIn = false;
 bot.on('spawn', () => {
   console.log(`${bot.username} spawned into Minecraft world.`);
 
-  // Send /login command 3 seconds after spawning
+  // Send register command 3 seconds after joining
   setTimeout(() => {
-    console.log('Sending auto-login command...');
-    bot.chat('/login ilovegay');
+    console.log('Registering bot with EasyAuth...');
+    bot.chat('/register ilovegay ilovegay');
   }, 3000);
 
-  // Enable physics safely after login completes
+  // Enable physics
   setTimeout(() => {
     bot.physics.enabled = true;
     bot.clearControlStates();
-    console.log('Physics enabled. Bot ready!');
+    console.log('Bot ready!');
   }, 5000);
 });
 
