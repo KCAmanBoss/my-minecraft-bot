@@ -44,7 +44,7 @@ bot.on('spawn', () => {
   // Send register command 3 seconds after joining
   setTimeout(() => {
     console.log('Registering bot with EasyAuth...');
-    bot.chat('/register ilovegay ilovegay');
+    bot.chat('/login ilovegay');
   }, 3000);
 
   // Enable physics
