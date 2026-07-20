@@ -2,12 +2,10 @@ const mineflayer = require('mineflayer');
 const { Client, GatewayIntentBits } = require('discord.js');
 
 // --- CONFIGURATION ---
-// --- CONFIGURATION ---
 const BOT_PASSWORD = 'ilovegay'; 
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN; 
-const CHANNEL_ID = process.env.CHANNEL_ID;
+const CHANNEL_ID = process.env.CHANNEL_ID; 
 
-// Initialize Discord Client
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -16,13 +14,12 @@ const client = new Client({
   ]
 });
 
-// Initialize Minecraft Bot
 const bot = mineflayer.createBot({
   host: '148.113.30.96', 
   port: 7037,            
   username: 'bot1',
   version: '1.20.1',
-  physicsEnabled: false // Keeps your login movement fix intact
+  physicsEnabled: false 
 });
 
 // --- DISCORD EVENTS ---
@@ -30,31 +27,37 @@ client.once('ready', () => {
   console.log(`Discord bot logged in as ${client.user.tag}`);
 });
 
-// Send messages from Discord into Minecraft chat
 client.on('messageCreate', (message) => {
   if (message.author.bot || message.channel.id !== CHANNEL_ID) return;
   bot.chat(`[Discord] ${message.author.username}: ${message.content}`);
 });
 
 // --- MINECRAFT EVENTS ---
-// Scan all incoming chat messages for the login prompt
-bot.on('messagestr', (message) => {
-  if (message.includes('/login')) {
-    console.log('EasyAuth login prompt detected. Sending password...');
-    bot.chat(`/login ${BOT_PASSWORD}`);
-    
+let hasLoggedIn = false;
+
+bot.on('spawn', () => {
+  console.log(`${bot.username} spawned into world.`);
+  
+  // Automatically send /login 2 seconds after connecting
+  setTimeout(() => {
+    if (!hasLoggedIn) {
+      console.log('Sending auto-login command...');
+      bot.chat(`/login ${BOT_PASSWORD}`);
+      hasLoggedIn = true;
+    }
+
+    // Turn physics back on safely after login completes
     setTimeout(() => {
       bot.physics.enabled = true;
       bot.clearControlStates();
-      console.log('Bot successfully authenticated and stable. Physics enabled.');
+      console.log('Physics enabled. Bot is ready!');
       
       const channel = client.channels.cache.get(CHANNEL_ID);
       if (channel) channel.send('✅ **Bot successfully connected and logged into Minecraft!**');
-    }, 4000);
-  }
+    }, 3000);
+  }, 2000);
 });
 
-// Forward Minecraft server chat over to Discord
 bot.on('chat', (username, message) => {
   if (username === bot.username) return;
 
@@ -64,17 +67,13 @@ bot.on('chat', (username, message) => {
   }
 });
 
-bot.on('spawn', () => {
-  console.log(`${bot.username} joined the match/world.`);
-});
-
 bot.on('kicked', (reason) => {
   console.log(`Bot was kicked: ${reason}`);
+  hasLoggedIn = false;
   const channel = client.channels.cache.get(CHANNEL_ID);
   if (channel) channel.send(`❌ **Bot was kicked from the server:** ${reason}`);
 });
 
 bot.on('error', (err) => console.log(`Error: ${err}`));
 
-// Log in to Discord
 client.login(DISCORD_TOKEN);
