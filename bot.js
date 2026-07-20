@@ -40,25 +40,19 @@ let hasLoggedIn = false;
 
 bot.on('spawn', () => {
   console.log(`${bot.username} spawned into Minecraft world.`);
-  
-  // Send /login command 2 seconds after joining using template literals (backticks)
-  setTimeout(() => {
-    if (!hasLoggedIn) {
-      console.log('Sending auto-login command...');
-      bot.chat(`/login ${BOT_PASSWORD}`);
-      hasLoggedIn = true;
-    }
 
-    // Enable physics safely 3 seconds after login completes
-    setTimeout(() => {
-      bot.physics.enabled = true;
-      bot.clearControlStates();
-      console.log('Physics enabled. Bot ready!');
-      
-      const channel = client.channels.cache.get(CHANNEL_ID);
-      if (channel) channel.send('✅ **Bot successfully connected and logged into Minecraft!**');
-    }, 3000);
-  }, 2000);
+  // Send /login command 3 seconds after spawning
+  setTimeout(() => {
+    console.log('Sending auto-login command...');
+    bot.chat('/login ilovegay');
+  }, 3000);
+
+  // Enable physics safely after login completes
+  setTimeout(() => {
+    bot.physics.enabled = true;
+    bot.clearControlStates();
+    console.log('Physics enabled. Bot ready!');
+  }, 5000);
 });
 
 // Relay Minecraft chat to Discord
