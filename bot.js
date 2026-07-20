@@ -17,7 +17,7 @@ const client = new Client({
 const bot = mineflayer.createBot({
   host: '148.113.30.96', 
   port: 7037,            
-  username: 'bot1',
+  username: 'bot3', // <-- Updated to bot3
   version: '1.20.1',
   physicsEnabled: false 
 });
