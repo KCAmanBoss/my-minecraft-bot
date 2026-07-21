@@ -41,18 +41,20 @@ let hasLoggedIn = false;
 bot.on('spawn', () => {
   console.log(`${bot.username} spawned into Minecraft world.`);
 
-  // Send register command 3 seconds after joining
+  // Wait 5 full seconds after spawn before sending login command
   setTimeout(() => {
-    console.log('Registering bot with EasyAuth...');
+    console.log('Sending login command directly...');
     bot.chat('/login ilovegay');
-  }, 3000);
-
-  // Enable physics
-  setTimeout(() => {
-    bot.physics.enabled = true;
-    bot.clearControlStates();
-    console.log('Bot ready!');
   }, 5000);
+
+  // Enable physics safely after authentication
+  setTimeout(() => {
+    if (bot.physics) {
+      bot.physics.enabled = true;
+      bot.clearControlStates();
+    }
+    console.log('Bot initialized and ready.');
+  }, 7000);
 });
 
 // Relay Minecraft chat to Discord
