@@ -1,3 +1,6 @@
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first'); // Forces IPv4 to fix ENETUNREACH on Render
+
 const mineflayer = require('mineflayer');
 const express = require('express');
 
@@ -9,8 +12,8 @@ app.listen(PORT, () => console.log(`Web server running on port ${PORT}`));
 
 // --- 2. MINECRAFT BOT CONFIGURATION ---
 const bot = mineflayer.createBot({
-  host: 'gp.cybroxa.com', // Your server IP
-  port: 25903,           // Your server port
+  host: 'gp.cybroxa.com',
+  port: 25903,
   username: 'bot3',
   version: false
 });
