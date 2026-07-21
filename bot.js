@@ -1,26 +1,25 @@
 const dns = require('dns');
-dns.setDefaultResultOrder('ipv4first'); // Forces IPv4 to fix ENETUNREACH on Render
+dns.setDefaultResultOrder('ipv4first');
 
 const mineflayer = require('mineflayer');
 const express = require('express');
 
-// --- 1. LIGHTWEIGHT WEB SERVER (FOR KEEP-ALIVE) ---
+// Light web server for cron-job pinging
 const app = express();
 app.get('/', (req, res) => res.status(200).send('OK'));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Web server running on port ${PORT}`));
 
-// --- 2. MINECRAFT BOT CONFIGURATION ---
+// Minecraft bot setup
 const bot = mineflayer.createBot({
-  host: 'gp.cybroxa.com',
-  port: 25903,
+  host: '148.113.30.96', // Updated Direct IP
+  port: 7037,            // Updated Port
   username: 'bot3',
   version: false
 });
 
 let isLogged = false;
 
-// Auto-Login / EasyAuth Listener
 bot.on('messagestr', (message) => {
   console.log('[MC Chat]:', message);
   if (message.includes('/login') || message.includes('register') || message.includes('authenticate')) {
@@ -43,4 +42,4 @@ bot.on('spawn', () => {
 });
 
 bot.on('error', (err) => console.log('Bot Error:', err));
-bot.on('end', () => console.log('Bot disconnected. Restarting container...'));
+bot.on('end', () => console.log('Bot disconnected. Restarting...'));
