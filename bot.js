@@ -57,16 +57,16 @@ function createBotAccount(config, delay) {
 
     bot.on('error', (err) => console.log(`${config.username} Error:`, err));
     
-    // Auto-reconnect if a single bot drops
-    bot.on('end', () => {
-      console.log(`${config.username} disconnected. Reconnecting in 10s...`);
-      setTimeout(() => createBotAccount(config, 0), 10000);
+    // Smooth Reconnect (30s delay to prevent loop fights)
+    bot.on('end', (reason) => {
+      console.log(`${config.username} disconnected (${reason}). Reconnecting in 30 seconds...`);
+      setTimeout(() => createBotAccount(config, 0), 30000);
     });
 
   }, delay);
 }
 
-// --- 4. START ALL BOTS (5-second gap to prevent login spam kicks) ---
+// --- 4. START ALL BOTS (10-second gap) ---
 botConfigs.forEach((config, index) => {
-  createBotAccount(config, index * 5000);
+  createBotAccount(config, index * 10000);
 });
