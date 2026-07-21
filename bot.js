@@ -1,30 +1,43 @@
-// Variable to ensure we only attempt login once per session
-let isLogged = false;
+const mineflayer = require('mineflayer');
+const express = require('express');
 
-bot.on('spawn', () => {
-  console.log(`${bot.username} spawned into Minecraft world.`);
-  isLogged = false;
+// --- 1. LIGHTWEIGHT WEB SERVER (FOR KEEP-ALIVE) ---
+const app = express();
+app.get('/', (req, res) => res.status(200).send('OK'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Web server running on port ${PORT}`));
 
-  // Backup login attempt after 3 seconds
-  setTimeout(() => {
-    if (!isLogged) {
-      console.log('Sending backup login command...');
-      bot.chat('/login ilovegay');
-    }
-  }, 3000);
+// --- 2. MINECRAFT BOT CONFIGURATION ---
+const bot = mineflayer.createBot({
+  host: 'gp.cybroxa.com', // Your server IP
+  port: 25903,           // Your server port
+  username: 'bot3',
+  version: false
 });
 
-// Detect EasyAuth prompts directly from server chat
+let isLogged = false;
+
+// Auto-Login / EasyAuth Listener
 bot.on('messagestr', (message) => {
-  console.log('[Server Chat]:', message);
-  
-  // If EasyAuth asks to login or register, respond immediately
+  console.log('[MC Chat]:', message);
   if (message.includes('/login') || message.includes('register') || message.includes('authenticate')) {
     if (!isLogged) {
-      console.log('EasyAuth prompt detected! Sending login...');
+      console.log('Sending login command...');
       bot.chat('/login ilovegay');
       isLogged = true;
     }
   }
 });
- 
+
+bot.on('spawn', () => {
+  console.log('Bot successfully spawned into Minecraft!');
+  isLogged = false;
+  setTimeout(() => {
+    if (!isLogged) {
+      bot.chat('/login ilovegay');
+    }
+  }, 3000);
+});
+
+bot.on('error', (err) => console.log('Bot Error:', err));
+bot.on('end', () => console.log('Bot disconnected. Restarting container...'));
